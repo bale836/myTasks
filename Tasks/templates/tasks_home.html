@@ -4,11 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>myTasks Management</title>
     <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <script src="../static/layui/layui.js"></script>
   </head>
   <body>
-
-    <script src="../static/layui/layui.js"></script>
-
     <script>
       layui.config({
         base: '/static/js/modules/' //你存放新模块的目录，注意，不是layui的模块目录
@@ -63,34 +61,68 @@
   <form class="layui-form layui-form-pane" action="">
   <div class="layui-container">
     <div class="layui-form-item">
-      <label class="layui-form-label">单行输入框</label>
+      <label class="layui-form-label">任务标题</label>
       <div class="layui-input-block">
-        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+        <input type="text" name="taskName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" />
       </div>
     </div>
-    <div class="layui-btn-group layui-col-lg-offset9">
-      <button class="layui-btn" lay_filter="add">增加</button>
-      <button class="layui-btn" lay_filter="edit">编辑</button>
-      <button class="layui-btn">删除</button>
+    <div class="layui-form-item">
+      <label class="layui-form-label">任务描述</label>
+      <div class="layui-input-block">
+        <input type="text" name="taskDesc" autocomplete="off" class="layui-input" />
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">任务类型</label>
+      <div class="layui-input-block">
+        <select name="taskType">
+          <option value=""></option>
+          <option value="0">一次性任务</option>
+          <option value="1">周期性任务</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-btn-group layui-col-lg-offset9">
+        <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+        <button class="layui-btn" lay-filter="edit" lay-submit="">编辑</button>
+        <button class="layui-btn">删除</button>
+      </div>
     </div>
   </div>
   </form>
 
   <script>
-  layui.use(['form', 'layedit', 'laydate'], function(){
+  layui.use(['jquery', 'form', 'layedit', 'laydate'], function(){
     var form = layui.form
     ,layedit = layui.layedit
-    ,laydate = layui.laydate;
+    ,laydate = layui.laydate
+    ,$ = layui.jquery;
     console.log("enter:");
   //监听提交
     form.on('submit(add)', function(data){
       //layer.alert(JSON.stringify(data.field), {
       //  title: '最终的提交信息'
       console.log("test");
+      layer.msg(JSON.stringify(data.field));
+      $.post('/api/createTask', JSON.stringify(data.field), function(res){
+        console.log(res.code)
+      })
+      /*$.ajax({
+        type: "POST",
+        url: '/api/createTask',
+        dataType: "json",
+        data: data.field,
+        success: function(res) {
+          console.log(res.code)
+        }
+      })*/
+      return false;
       });
       //return false;
     form.on('submit(edit)', function(data){
       console.log("edit");
+      return false;
     });
   });
   </script>

@@ -17,8 +17,10 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from Tasks import views
+from inf import taskHandler
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tasks/', views.tasks),
+    url(r'^api/', taskHandler.createTask),
 ]

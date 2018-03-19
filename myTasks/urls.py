@@ -22,5 +22,6 @@ from inf import taskHandler
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tasks/', views.tasks),
-    url(r'^api/', taskHandler.createTask),
+    url(r'^api/createTask', taskHandler.createTask),
+    url(r'^api/queryTask', taskHandler.queryTask),
 ]

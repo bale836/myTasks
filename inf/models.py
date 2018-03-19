@@ -8,6 +8,7 @@ class Task(models.Model):
   taskName = models.CharField('taskName', blank=False, max_length=32)
   taskDesc = models.CharField('taskDesc', blank=False, max_length=128)
   taskType = models.IntegerField('taskType', blank=False, choices=(('0', 'OneTime'), ('1', 'Period'),))
+  createTime = models.DateTimeField('createTime', blank=False, auto_now=True)
 
   class Meta:
     db_table = "h_t_task"

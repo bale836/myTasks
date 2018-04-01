@@ -28,6 +28,7 @@
     </div>
     <div class="layui-row">
       <div class="layui-col-lg12">
+  <table class="layui-table" id="tasks" lay-filter="taskstable"></table>
   <table class="layui-table">
     <colgroup>
       <col width="150">
@@ -93,6 +94,27 @@
   </form>
 
   <script>
+    layui.use('table', function(){
+      var table = layui.table;
+
+      table.render({
+        elem: '#tasks'
+        ,height: 315
+        ,url: '/api/queryTask'
+        ,method: "POST"
+        ,contenttype: "application/json"
+        ,where: {"startCreateTime": "2018-03-18", "endCreateTime": "2018-03-19"}
+        ,page: true
+        ,cols: [[
+          {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+          ,{field: 'taskName', title: '任务名称', width: 200}
+          ,{field: 'taskDesc', title: '任务描述', width: 400}
+          ,{field: 'taskType', title: '任务类型', width: 100, sort: true}
+          ,{field: 'createTime', title: '创建时间', width: 100, sort: true}
+        ]]
+      });
+    });
+
   layui.use(['jquery', 'form', 'layedit', 'laydate'], function(){
     var form = layui.form
     ,layedit = layui.layedit

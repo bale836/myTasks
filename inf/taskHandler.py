@@ -11,24 +11,26 @@ import datetime
 # Create your views here.
 
 # Initial the result message
-result = {}
-result['ResCode'] = "000"
-result['Desc'] = "Success"
+def initResMsg():
+  result = {}
+  result['code'] = "000"
+  result['msg'] = "Success"
+  return result
 
 # Common method to check the request format
 def chkRequestJson(request):
     reqFormat = request.META['CONTENT_TYPE']
     print "Content-Type: " + reqFormat
     if reqFormat != "application/json":
-        result['ResCode'] = "-1"
-        result['Desc'] = "The Content-Type is not application/json"
+        result['code'] = "-1"
+        result['msg'] = "The Content-Type is not application/json"
         return result
     
     try:
         json.loads(request.body)
     except:
-        result['ResCode'] = "-1"
-        result['Desc'] = "The request format is not json."
+        result['code'] = "-1"
+        result['msg'] = "The request format is not json."
         return result
 
 # create Task
@@ -37,6 +39,7 @@ def dispatcherMsg(request):
   pass
 
 def createTask(request):
+  result = initResMsg()
   chkRequestJson(request)
   reqTaskBody = json.loads(request.body)
   print reqTaskBody
@@ -50,7 +53,9 @@ def createTask(request):
 
 # query Tasks
 def queryTask(request):
+  result = initResMsg()
   chkRequestJson(request)
+  print "body: " + request.body
   reqTaskBody = json.loads(request.body)
   
   if reqTaskBody.has_key('startCreateTime'):
@@ -61,5 +66,5 @@ def queryTask(request):
     #tasks = Task.objects.filter(createTime__range=(_startCreateTime, _endCreateTime)).values('id', 'taskName', 'taskDesc', 'createTime')
     tasks = Task.objects.filter(createTime__range=(_startCreateTime, _endCreateTime)).values()
  
-  result['Data'] = list(tasks)
+  result['data'] = list(tasks)
   return JsonResponse(result)
